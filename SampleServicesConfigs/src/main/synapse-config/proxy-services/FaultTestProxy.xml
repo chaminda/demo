@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy name="FaultTestProxy" startOnLoad="true" transports="http https" xmlns="http://ws.apache.org/ns/synapse">
+    <target faultSequence="fault_demo">
+        <inSequence>
+            <switch source="//m0:getQuote/m0:request/m0:symbol" xmlns:m0="http://services.samples">
+                <case regex="IBM">
+                    <send>
+                        <endpoint>
+                            <address uri="http://localhost:9000/services/SimpleStockQuoteService">
+                                <suspendOnFailure>
+                                    <initialDuration>-1</initialDuration>
+                                    <progressionFactor>1</progressionFactor>
+                                </suspendOnFailure>
+                                <markForSuspension>
+                                    <retriesBeforeSuspension>0</retriesBeforeSuspension>
+                                </markForSuspension>
+                            </address>
+                        </endpoint>
+                    </send>
+                </case>
+                <case regex="MSFT">
+                    <send>
+                        <endpoint key="bogus"/>
+                    </send>
+                </case>
+                <case regex="SUN">
+                    <sequence key="sunSequence"/>
+                </case>
+                <default/>
+            </switch>
+            <drop/>
+        </inSequence>
+        <outSequence/>
+    </target>
+</proxy>

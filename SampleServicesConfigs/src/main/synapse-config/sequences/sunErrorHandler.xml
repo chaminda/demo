@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="sunErrorHandler" trace="disable" xmlns="http://ws.apache.org/ns/synapse">
+    <log level="custom">
+        <property name="text" value="CUSTOM_ERROR: An unexpected error occured for stock SUN"/>
+        <property expression="get-property('ERROR_CODE')" name="message"/>
+        <property expression="get-property('ERROR_MESSAGE')" name="message"/>
+    </log>
+    <property name="HTTP_SC" scope="axis2" type="STRING" value="500"/>
+    <respond/>
+</sequence>
